@@ -19,6 +19,8 @@ exports.handleSensorData = async (username, message) => {
         username,
         first_data: message,
         last_data: message,
+        tegangan: 0,
+        waktu: new Date().toISOString(),
       });
       console.log(`Created new entry for user: ${username}`);
     }

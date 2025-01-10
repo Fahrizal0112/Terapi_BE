@@ -15,6 +15,14 @@ const SensorData = sequelize.define('SensorData', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  tegangan: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+  },
+  waktu: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 module.exports = SensorData;
