@@ -11,6 +11,8 @@ exports.handleSensorData = async (username, message) => {
     if (userSensorData) {
       // Jika sudah ada, perbarui kolom last_data
       userSensorData.last_data = message;
+      userSensorData.tegangan = message;
+      userSensorData.waktu = message;
       await userSensorData.save();
       console.log(`Updated last_data for user: ${username}`);
     } else {
