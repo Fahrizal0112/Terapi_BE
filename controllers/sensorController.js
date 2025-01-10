@@ -5,51 +5,29 @@ const SensorData = require('../models/SensorData');
  */
 exports.handleSensorData = async (username, message) => {
   try {
-    // Cek apakah message adalah JSON valid
-    let data;
-    try {
-      data = typeof message === 'string' ? JSON.parse(message) : message;
-    } catch (e) {
-      console.log('Message bukan format JSON:', message);
-      // Jika bukan JSON, asumsikan ini adalah data sensor langsung
-      data = {
-        username: username,
-        data: message,
-        tegangan: null,
-        waktu: null
-      };
-    }
-    
-    console.log('Processed data:', data);
-    
-    if (!data.username) {
-      throw new Error('Username tidak ditemukan dalam data');
-    }
-    
-    const userSensorData = await SensorData.findOne({ where: { username: data.username } });
+    // Periksa apakah pengguna sudah ada di database
+    const userSensorData = await SensorData.findOne({ where: { username } });
 
     if (userSensorData) {
-      // Update existing data
-      await userSensorData.update({
-        last_data: data.data || null,
-        tegangan: data.tegangan || null,
-        waktu: data.waktu || null
-      });
-      console.log(`Updated data for user: ${data.username}`);
+      // Jika sudah ada, perbarui kolom last_data
+      userSensorData.last_data = message;
+      userSensorData.tegangan = message;
+      userSensorData.waktu = message;
+      await userSensorData.save();
+      console.log(`Updated last_data for user: ${username}`);
     } else {
-      // Create new entry
+      // Jika belum ada, buat entri baru dengan first_data
       await SensorData.create({
-        username: data.username,
-        first_data: data.data || null,
-        last_data: data.data || null,
-        tegangan: data.tegangan || null,
-        waktu: data.waktu || null
+        username,
+        first_data: message,
+        last_data: message,
+        tegangan: message,
+        waktu: message,
       });
-      console.log(`Created new entry for user: ${data.username}`);
+      console.log(`Created new entry for user: ${username}`);
     }
   } catch (error) {
     console.error('Error handling sensor data:', error);
-    console.error('Received message:', message);
   }
 };
 

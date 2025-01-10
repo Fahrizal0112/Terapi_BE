@@ -24,8 +24,8 @@ mqttClient.on('message', async (topic, message) => {
   try {
     const payload = JSON.parse(message.toString());
 
-    if (payload.username && payload.data) {
-      await handleSensorData(payload.username, payload.data);
+    if (payload.username && payload.data && payload.tegangan && payload.waktu) {
+      await handleSensorData(payload.username, payload.data, payload.tegangan, payload.waktu);
     } else {
       console.warn('Invalid MQTT message format:', message.toString());
     }
