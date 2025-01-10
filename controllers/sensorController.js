@@ -5,9 +5,26 @@ const SensorData = require('../models/SensorData');
  */
 exports.handleSensorData = async (username, message) => {
   try {
-    // Parse message jika dalam bentuk string
-    const data = typeof message === 'string' ? JSON.parse(message) : message;
-    console.log('Received data:', data); // untuk debugging
+    // Cek apakah message adalah JSON valid
+    let data;
+    try {
+      data = typeof message === 'string' ? JSON.parse(message) : message;
+    } catch (e) {
+      console.log('Message bukan format JSON:', message);
+      // Jika bukan JSON, asumsikan ini adalah data sensor langsung
+      data = {
+        username: username,
+        data: message,
+        tegangan: null,
+        waktu: null
+      };
+    }
+    
+    console.log('Processed data:', data);
+    
+    if (!data.username) {
+      throw new Error('Username tidak ditemukan dalam data');
+    }
     
     const userSensorData = await SensorData.findOne({ where: { username: data.username } });
 
@@ -32,7 +49,7 @@ exports.handleSensorData = async (username, message) => {
     }
   } catch (error) {
     console.error('Error handling sensor data:', error);
-    console.error('Received message:', message); // untuk debugging
+    console.error('Received message:', message);
   }
 };
 
