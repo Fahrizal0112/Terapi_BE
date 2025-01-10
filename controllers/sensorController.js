@@ -5,27 +5,22 @@ const SensorData = require('../models/SensorData');
  */
 exports.handleSensorData = async (username, message) => {
   try {
-    // Parse message jika dalam bentuk string
-    const data = typeof message === 'string' ? JSON.parse(message) : message;
-    
     // Periksa apakah pengguna sudah ada di database
     const userSensorData = await SensorData.findOne({ where: { username } });
 
     if (userSensorData) {
-      // Jika sudah ada, perbarui kolom last_data dan data lainnya
-      userSensorData.last_data = data.data;
-      userSensorData.tegangan = data.tegangan;
-      userSensorData.waktu = data.waktu;
+      // Jika sudah ada, perbarui kolom last_data
+      userSensorData.last_data = message;
       await userSensorData.save();
-      console.log(`Updated data for user: ${username}`);
+      console.log(`Updated last_data for user: ${username}`);
     } else {
-      // Jika belum ada, buat entri baru
+      // Jika belum ada, buat entri baru dengan first_data
       await SensorData.create({
         username,
-        first_data: data.data,
-        last_data: data.data,
-        tegangan: data.tegangan,
-        waktu: data.waktu
+        first_data: message,
+        last_data: message,
+        tegangan: message,
+        waktu: message,
       });
       console.log(`Created new entry for user: ${username}`);
     }
