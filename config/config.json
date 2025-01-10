@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "your_root_password",
+    "database": "sensor_data",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "your_root_password",
+    "database": "sensor_data",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "your_root_password",
+    "database": "sensor_data",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
