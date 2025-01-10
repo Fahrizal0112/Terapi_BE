@@ -5,29 +5,34 @@ const SensorData = require('../models/SensorData');
  */
 exports.handleSensorData = async (username, message) => {
   try {
-    // Periksa apakah pengguna sudah ada di database
-    const userSensorData = await SensorData.findOne({ where: { username } });
+    // Parse message jika dalam bentuk string
+    const data = typeof message === 'string' ? JSON.parse(message) : message;
+    console.log('Received data:', data); // untuk debugging
+    
+    const userSensorData = await SensorData.findOne({ where: { username: data.username } });
 
     if (userSensorData) {
-      // Jika sudah ada, perbarui kolom last_data
-      userSensorData.last_data = message;
-      userSensorData.tegangan = message;
-      userSensorData.waktu = message;
-      await userSensorData.save();
-      console.log(`Updated last_data for user: ${username}`);
-    } else {
-      // Jika belum ada, buat entri baru dengan first_data
-      await SensorData.create({
-        username,
-        first_data: message,
-        last_data: message,
-        tegangan: message,
-        waktu: message,
+      // Update existing data
+      await userSensorData.update({
+        last_data: data.data || null,
+        tegangan: data.tegangan || null,
+        waktu: data.waktu || null
       });
-      console.log(`Created new entry for user: ${username}`);
+      console.log(`Updated data for user: ${data.username}`);
+    } else {
+      // Create new entry
+      await SensorData.create({
+        username: data.username,
+        first_data: data.data || null,
+        last_data: data.data || null,
+        tegangan: data.tegangan || null,
+        waktu: data.waktu || null
+      });
+      console.log(`Created new entry for user: ${data.username}`);
     }
   } catch (error) {
     console.error('Error handling sensor data:', error);
+    console.error('Received message:', message); // untuk debugging
   }
 };
 

@@ -16,7 +16,7 @@ const SensorData = sequelize.define('SensorData', {
     allowNull: true,
   },
   tegangan: {
-    type: DataTypes.FLOAT,
+    type: DataTypes.STRING,
     allowNull: true,
   },
   waktu: {
