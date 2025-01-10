@@ -3,31 +3,31 @@ const SensorData = require('../models/SensorData');
 /**
  * Fungsi untuk menyimpan atau memperbarui data sensor berdasarkan username.
  */
-exports.handleSensorData = async (username, message) => {
+exports.handleSensorData = async (username, payload) => {
   try {
-    // Periksa apakah pengguna sudah ada di database
     const userSensorData = await SensorData.findOne({ where: { username } });
 
     if (userSensorData) {
-      // Jika sudah ada, perbarui kolom last_data
-      userSensorData.last_data = message;
-      userSensorData.tegangan = message;
-      userSensorData.waktu = message;
+      // Update dengan nilai yang sesuai
+      userSensorData.last_data = payload.data;
+      userSensorData.tegangan = payload.tegangan;
+      userSensorData.waktu = payload.waktu;
       await userSensorData.save();
-      console.log(`Updated last_data for user: ${username}`);
+      console.log(`Updated data for user: ${username}`, payload);
     } else {
-      // Jika belum ada, buat entri baru dengan first_data
+      // Create dengan nilai yang sesuai
       await SensorData.create({
         username,
-        first_data: message,
-        last_data: message,
-        tegangan: message,
-        waktu: message,
+        first_data: payload.data,
+        last_data: payload.data,
+        tegangan: payload.tegangan,
+        waktu: payload.waktu
       });
-      console.log(`Created new entry for user: ${username}`);
+      console.log(`Created new entry for user: ${username}`, payload);
     }
   } catch (error) {
     console.error('Error handling sensor data:', error);
+    console.error('Payload:', payload);
   }
 };
 
