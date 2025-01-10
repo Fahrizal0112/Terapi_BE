@@ -3,9 +3,11 @@ const sequelize = require('./config/database');
 const SensorData = require('./models/SensorData');
 const mqttClient = require('./config/mqtt');
 const { handleSensorData, getAllSensorData } = require('./controllers/sensorController');
+const cors = require('express');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // Endpoint untuk mendapatkan semua data sensor
 app.get('/api/sensor-data', getAllSensorData);
