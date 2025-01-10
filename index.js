@@ -7,7 +7,12 @@ const cors = require('express');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true
+}));
 
 // Endpoint untuk mendapatkan semua data sensor
 app.get('/api/sensor-data', getAllSensorData);
