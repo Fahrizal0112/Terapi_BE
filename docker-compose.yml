@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=sensor_data
+      - DB_USER=root
+      - DB_PASSWORD=your_root_password
+      - DB_HOST=db
+      - DB_DIALECT=mysql
+      - MQTT_BROKER=mqtt://broker.emqx.io
+      - MQTT_TOPIC=sensor/data
+      - PORT=3000
+    restart: always
+
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=your_root_password
+      - MYSQL_DATABASE=sensor_data
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+
+volumes:
+  mysql-data:
