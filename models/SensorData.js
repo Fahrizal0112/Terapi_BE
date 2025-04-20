@@ -11,6 +11,10 @@ const SensorData = sequelize.define('SensorData', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  jenis_kelamin: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   last_data: {
     type: DataTypes.STRING,
     allowNull: true,

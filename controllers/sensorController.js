@@ -11,6 +11,7 @@ exports.handleSensorData = async (username, payload) => {
       // Update dengan nilai yang sesuai
       userSensorData.last_data = payload.data;
       userSensorData.tegangan = payload.tegangan;
+      userSensorData.jenis_kelamin = payload.jenis_kelamin;
       userSensorData.waktu = payload.waktu;
       await userSensorData.save();
       console.log(`Updated data for user: ${username}`, payload);
@@ -20,6 +21,7 @@ exports.handleSensorData = async (username, payload) => {
         username,
         first_data: payload.data,
         last_data: payload.data,
+        jenis_kelamin:payload.jenis_kelamin,
         tegangan: payload.tegangan,
         waktu: payload.waktu
       });
