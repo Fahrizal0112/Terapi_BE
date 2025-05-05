@@ -5,23 +5,25 @@ const SensorData = require('../models/SensorData');
  */
 exports.handleSensorData = async (username, payload) => {
   try {
+    const [gsr1, gsr2] = payload.data.split('|');
+    
     const userSensorData = await SensorData.findOne({ where: { username } });
-
+    
     if (userSensorData) {
       // Update dengan nilai yang sesuai
-      userSensorData.last_data = payload.data;
+      userSensorData.first_data = gsr1;
+      userSensorData.last_data = gsr2;
       userSensorData.tegangan = payload.tegangan;
       userSensorData.jenis_kelamin = payload.jenis_kelamin;
       userSensorData.waktu = payload.waktu;
       await userSensorData.save();
       console.log(`Updated data for user: ${username}`, payload);
     } else {
-      // Create dengan nilai yang sesuai
       await SensorData.create({
         username,
-        first_data: payload.data,
-        last_data: payload.data,
-        jenis_kelamin:payload.jenis_kelamin,
+        first_data: gsr1,
+        last_data: gsr2,
+        jenis_kelamin: payload.jenis_kelamin,
         tegangan: payload.tegangan,
         waktu: payload.waktu
       });

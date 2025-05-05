@@ -2,7 +2,7 @@ const mqtt = require('mqtt');
 require('dotenv').config();
 
 const MQTT_BROKER = process.env.MQTT_BROKER || 'mqtt://broker.emqx.io';
-const MQTT_TOPIC = process.env.MQTT_TOPIC || 'sensor/data';
+const MQTT_TOPIC = process.env.MQTT_TOPIC || 'sensor/datagsr';
 
 const client = mqtt.connect(MQTT_BROKER);
 
